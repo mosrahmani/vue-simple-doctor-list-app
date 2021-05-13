@@ -5,19 +5,15 @@
             <div class="options">
                 <div class="options__search">
                     <img src="@/assets/img/loading.svg" v-show="isSearching" class="options__search--sub" alt="loading ...">
-                    <input
-                        type="text"
-                        placeholder="search ..."
-                        v-model="searchQuery"
-                    />
+                    <input type="text" placeholder="search ..." v-model="searchQuery" />
                     <i class="las la-search options__search--sub" v-show="!isSearching"></i>
                 </div>
                 <button class="btn btn-white ml-2" @click="toggleSort">
                     <i :class="sortIcon" class="las"></i>
                 </button>
-                <button class="btn btn-primary ml-2" @click="showAddModal()">
+                <button class="btn btn-primary add-btn ml-2" @click="showAddModal()">
                     <i class="las la-plus mr-1"></i>
-                    Add Profile
+                    <span>Add Profile</span>
                 </button>
             </div>
             <div v-if="profiles.length !== 0">
@@ -35,7 +31,7 @@
             </div>
 
         </div>
-        <Modal classes="modal" height="auto" width="500px" name="addProfile">
+        <Modal classes="modal" height="auto" name="addProfile">
             <form @submit.prevent="addProfile()">
                 <div class="modal__header">
                     <h3>New Profile</h3>
@@ -46,19 +42,32 @@
                         <label for="name">Name:</label>
                         <input id="name" type="text" v-model="newProfile.name" @blur="$v.newProfile.name.$touch()" placeholder="Enter Doctor name">
                         <div v-if="$v.newProfile.name.$error" class="mt-1">
-                            <div v-if="!$v.newProfile.name.alpha">just english</div>
+                            <div v-if="!$v.newProfile.name.alpha">Please enter just english characters</div>
                         </div>
                     </div>
                     <div>
                         <label for="speciality">specialities</label>
-                        <multiselect id="speciality" v-model="newProfile.speciality" :options="options" select-label="Pick this" deselectLabel="Remove this" :max="3" :max-height="140" :multiple="true" :searchable="true" :close-on-select="false" :clear-on-select="false" :preserve-search="true" placeholder="Pick some speciality">
+                        <multiselect
+                            id="speciality"
+                            v-model="newProfile.speciality"
+                            :options="options"
+                            select-label="Pick this"
+                            deselectLabel="Remove this"
+                            :max="3"
+                            :max-height="140"
+                            :multiple="true"
+                            :searchable="true"
+                            :close-on-select="false"
+                            :clear-on-select="false"
+                            :preserve-search="true"
+                            placeholder="Pick some speciality">
                         </multiselect>
                     </div>
                     <div class="form-control" :class="{ 'form-error': $v.newProfile.email.$error }">
                         <label for="email">Email:</label>
                         <input id="email" type="email" v-model="newProfile.email" @blur="$v.newProfile.email.$touch()" placeholder="Enter doctor email">
                         <div v-if="$v.newProfile.email.$error" class="mt-1">
-                            <div v-if="!$v.newProfile.email.email">not valid</div>
+                            <div v-if="!$v.newProfile.email.email">Please enter a valid email</div>
                         </div>
                     </div>
                 </div>
@@ -79,7 +88,6 @@ import Multiselect from 'vue-multiselect'
 
 export default {
   name: 'App',
-
   data () {
     return {
       profiles: json.profiles,
@@ -88,18 +96,12 @@ export default {
       debounce: null,
       sortType: 'asc',
       options: ['Surgeon', 'Radiologist', 'Cardiologist', 'Psychiatrist', 'Dermatologist'],
-    //   options: [
-    //     { name: 'Vue.js', language: 'JavaScript' },
-    //     { name: 'Adonis', language: 'JavaScript' },
-    //     { name: 'Rails', language: 'Ruby' },
-    //   ],
       newProfile: {
         email: '',
         speciality: []
       }
     }
   },
-
   components: {
     ProfileCard,
     Multiselect
@@ -151,15 +153,15 @@ export default {
 
     },
     toggleLike (profileId) {
-        let index = this.profiles.findIndex(obj => obj.id === profileId)
-        let is_liked = this.profiles[index].is_liked
-      if (is_liked) {
-          this.profiles[index].likes--
-        this.profiles[index].is_liked = false
-      } else {
-          this.profiles[index].likes++
-          this.profiles[index].is_liked = true
-      }
+        let i = this.profiles.findIndex(obj => obj.id === profileId)
+        let is_liked = this.profiles[i].is_liked
+        if (is_liked) {
+            this.profiles[i].likes--
+            this.profiles[i].is_liked = false
+        } else {
+            this.profiles[i].likes++
+            this.profiles[i].is_liked = true
+        }
     }
   },
   watch: {
@@ -187,14 +189,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
     height: 100%;
-}
-.centering {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .app-title {
     width: 100%;
@@ -229,49 +226,11 @@ export default {
     border-radius: 0.8rem;
     padding: 1.3rem;
 }
-.btn-primary {
-    background-color: #23049d;
-    color: #fff;
-}
-.btn-white {
-    background-color: #fff;
-}
-.btn-light {
-    background-color: #f4f9f9;
-}
-.content {
-    display: flex;
-}
-
-@media screen and (min-width: 600px) {
-    .section {
-        width: 50vw;
-        max-width: 20em;
-    }
-}
-
-.input {
-    flex: 1;
-    padding: 1em;
-    border: 0;
-    color: #8f8f8f;
-    font-size: 1rem;
-}
-
-.buttons {
-    display: flex;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
-    margin-top: 30px;
-}
-
-.icons-note {
-    margin-top: 30px;
-    font-size: 10px;
-}
 .modal {
     border-radius: 1rem !important;
     box-shadow: none !important;
     padding: 2rem;
+    max-width: 500px;
 }
 .modal__header {
     display: flex;
@@ -286,7 +245,6 @@ export default {
     margin-top: 1.4rem;
 }
 .not-found {
-    /* text-align: center; */
     color: red;
     font-size: 1.2rem;
 }

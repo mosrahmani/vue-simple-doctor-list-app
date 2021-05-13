@@ -1,5 +1,5 @@
 <template>
-  <div class="card profile">
+  <div class="card profile" v-click-outside="closeCommentBox">
     <div>
       <div class="space-between">
         <div class="d-flex">
@@ -16,16 +16,16 @@
             <span class=" mr-1">{{ profile.likes }}</span>
             <i :class="!profile.is_liked ? 'lar' : 'las text-danger'" class="la-heart icon"></i>
           </span>
-          <span role="button" class="mr-1" @click="CommentActiveItem = profile.id">
+          <span role="button" class="mr-1" @click="commentIsActive = !commentIsActive">
             <i class="lar la-comment-dots icon"></i>
           </span>
-          <a :href="mailTo(profile.email)" class="mr-1" @click="toggleLike()">
+          <a :href="mailTo(profile.email)" class="mr-1">
             <i class="las la-envelope icon"></i>
           </a>
         </div>
       </div>
     </div>
-    <div class="comment input-control" v-if="CommentActiveItem == profile.id">
+    <div class="comment input-control" v-if="commentIsActive">
       <input type="text" placeholder="write something ...">
       <button><i class="las la-paper-plane"></i></button>
     </div>
@@ -37,20 +37,15 @@
 
 export default {
   name: 'ProfileCard',
-
-  components: {
-    // DoctorIcon
-  },
   data () {
     return {
-      CommentActiveItem: '',
+      commentIsActive: null,
       is_liked: false
     }
   },
   computed: {
     likeIcon (is_liked) {
       return is_liked ? 'lar' : 'las text-danger'
-      console.log(is_liked)
     }
   },
   filters: {
@@ -68,6 +63,9 @@ export default {
     },
     toggleLike(profileId) {
       this.$emit('toggle-like', profileId)
+    },
+    closeCommentBox() {
+      this.commentIsActive = false
     }
   },
   props: {
@@ -79,10 +77,6 @@ export default {
 }
 </script>
 <style>
-.profile {
-  /* display: flex; */
-  /* align-items: center; */
-}
 .profile__avatar {
   width: 3.6rem;
   height: 3.6rem;
@@ -124,6 +118,8 @@ export default {
   border: 0;
   border-radius: .8rem;
   background-color: #23049d;
+  box-shadow:0 .6rem 1.6rem .5rem rgba(35,4,157,.15);
+
   color: #fff;
 }
 .comment > input {
@@ -136,9 +132,6 @@ export default {
 .comment input:focus {
   border: 1px solid #23049d;
   color: #23049d;
-}
-.comment input:focus + i {
-  color: red;
 }
 
 .likeBtn {
