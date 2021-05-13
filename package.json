@@ -3,13 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "npm run lint -- --fix && vue-cli-service serve",
+    "build": "npm run lint -- --fix && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "lodash.debounce": "^4.0.8",
+    "vue": "^2.6.11",
+    "vue-js-modal": "^2.0.0-rc.6",
+    "vue-multiselect": "^2.1.6",
+    "vuelidate": "^0.7.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.0",
@@ -23,6 +27,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^6.0.0",
+    "sass-loader": "^11.1.0",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
@@ -36,8 +42,7 @@
     ],
     "parserOptions": {
       "parser": "babel-eslint"
-    },
-    "rules": {}
+    }
   },
   "browserslist": [
     "> 1%",

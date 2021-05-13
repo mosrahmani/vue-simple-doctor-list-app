@@ -1,0 +1,40 @@
+{
+	"profiles": [
+		{
+			"id": 1,
+			"name": "Mos",
+			"speciality": [
+				"Psychiatrist",
+				"Dermatologist"
+			],
+			"email": "anna@poz.pl",
+			"description": "Surgeon",
+			"likes": 3,
+			"is_liked": false
+		},
+		{
+			"id": 2,
+			"name": "Anna",
+			"speciality": [
+				"Surgeon",
+				"Cardiologist"
+			],
+			"email": "mos@poz.pl",
+			"description": "Surgeon",
+			"likes": 31,
+			"is_liked": false
+		},
+		{
+			"id": 3,
+			"name": "John",
+			"speciality": [
+				"Surgeon",
+				"Radiologist"
+			],
+			"email": "john@poz.pl",
+			"description": "Surgeon",
+			"likes": 56,
+			"is_liked": false
+		}
+	]
+}
